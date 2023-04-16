@@ -47,7 +47,7 @@ public class LogItemExample {
                     .source("AUDIT")
                     .event("GET_TIMELINE")
                     .state("Cycle")
-                    .eventType(LoggedItemEventType.Business)
+                    .eventType(LoggedItemEventType.BUSINESS)
                     .user("a user")
                     .summary("a summary")
                     .build();
@@ -65,7 +65,7 @@ public class LogItemExample {
                     .occurrence(LocalDateTime.now(ZoneOffset.UTC))
                     .source("AUDIT")
                     .event("GET_TIMELINE")
-                    .eventType(LoggedItemEventType.Business)
+                    .eventType(LoggedItemEventType.BUSINESS)
                     .user("a user")
                     .summary("a summary")
                     .build();
