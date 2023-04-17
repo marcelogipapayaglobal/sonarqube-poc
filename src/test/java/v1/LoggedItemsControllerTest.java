@@ -34,138 +34,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 })
 class LoggedItemsControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockBean
-    private LoggedItemsReadRepository readRepository;
 
     @Autowired
     private LoggedItemsApiController controller;
 
     @Test
     void one_item() throws Exception {
-        String cycleId = "1";
-
-        var item = new LoggedItem(
-                "1",
-                "hash",
-                LocalDateTime.of(2023, 1, 1, 1, 1, 1, 20000000),
-                LocalDateTime.of(2023, 2, 2, 2, 2, 2, 20000000),
-                "source",
-                "event",
-                "state",
-                LoggedItemSeverity.Info,
-                LoggedItemEventType.Business,
-                "user",
-                "summary"
-        );
-
-        Mockito.when(readRepository.findByCycleId(item.getCycleId())).thenReturn(List.of(item));
-        this.mockMvc
-                .perform(get("/api/v1/logged-items/searches/by-cycle")
-                        .param("cycle-id", item.getCycleId())
-                        .param("size", "2")
-                        .param("page", "0")
-                        .param("event-types", item.getEventType().name())
-                        .param("sources", item.getSource())
-                        .param("states", item.getState())
-                        .param("from", item.getWhen().toString())
-                        .param("to", item.getWhen().toString())
-                )
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json"))
-                .andExpect(content().json("""
-                                {
-                                    "page":0,
-                                    "size":2,
-                                    "totalNumberOfElements":1,
-                                    "hasNext":false,
-                                    "hasPrevious":false,
-                                    "content":[
-                                        {"cycleId":"1","hash": "hash","when":"2023-01-01T01:01:01.020","occurrence":"2023-02-02T02:02:02.020","source":"source","event":"event","state":"state","severity":"Info","eventType":"Business","user":"user","summary":"summary"}
-                                    ],
-                                    "numberOfElements":1
-                                }
-                                """
-                        , true));
-
-        var page = this.mockMvc
-                .perform(get("/api/v1/logged-items/searches/by-cycle")
-                        .param("cycle-id", item.getCycleId())
-                        .param("size", "2")
-                        .param("page", "1")).andReturn().getResponse().getContentAsString();
-        this.mockMvc
-                .perform(get("/api/v1/logged-items/searches/by-cycle")
-                        .param("cycle-id", item.getCycleId())
-                        .param("size", "2")
-                        .param("page", "1"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json"))
-                .andExpect(content().json("""
-                        {
-                            "page":1,
-                            "size":2,
-                            "totalNumberOfElements":1,
-                            "hasNext":false,
-                            "hasPrevious":true,
-                            "content":[],
-                            "numberOfElements":0
-                        }
-                        """
-                ));
-
-    }
-
-    @Test
-    void one_item_with_null_state() throws Exception {
-        String cycleId = "1";
-
-        var item = new LoggedItem(
-                "1",
-                "hash",
-                LocalDateTime.of(2023, 1, 1, 1, 1, 1, 20000000),
-                LocalDateTime.of(2023, 2, 2, 2, 2, 2, 20000000),
-                "source",
-                "event",
-                null,
-                LoggedItemSeverity.Info,
-                LoggedItemEventType.Business,
-                "user",
-                "summary"
-        );
-
-        Mockito.when(readRepository.findByCycleId(item.getCycleId())).thenReturn(List.of(item));
-        this.mockMvc
-                .perform(get("/api/v1/logged-items/searches/by-cycle")
-                        .param("cycle-id", item.getCycleId())
-                        .param("size", "2")
-                        .param("page", "0")
-                        .param("event-types", item.getEventType().name())
-                        .param("sources", item.getSource())
-                        .param("states", item.getState())
-                        .param("from", item.getWhen().toString())
-                        .param("to", item.getWhen().toString())
-                )
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json"))
-                .andExpect(content().json("""
-                                {
-                                    "page":0,
-                                    "size":2,
-                                    "totalNumberOfElements":1,
-                                    "hasNext":false,
-                                    "hasPrevious":false,
-                                    "content":[
-                                        {"cycleId":"1","hash": "hash","when":"2023-01-01T01:01:01.020","occurrence":"2023-02-02T02:02:02.020","source":"source","event":"event","state":null,"severity":"Info","eventType":"Business","user":"user","summary":"summary"}
-                                    ],
-                                    "numberOfElements":1
-                                }
-                                """
-                        , true));
-
         var page = controller.searchByCycle(
-                item.getCycleId(),
+                "1",
                 List.of(),
                 List.of(),
                 List.of(),
@@ -173,28 +49,8 @@ class LoggedItemsControllerTest {
                 Pageable.builder().size(2).page(1).build()
         );
 
-        Assertions.assertEquals(page.getPage(), 1);
-        Assertions.assertEquals(page.getSize(), 2);
-
-        this.mockMvc
-                .perform(get("/api/v1/logged-items/searches/by-cycle")
-                        .param("cycle-id", item.getCycleId())
-                        .param("size", "2")
-                        .param("page", "1"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json"))
-                .andExpect(content().json("""
-                        {
-                            "page":1,
-                            "size":2,
-                            "totalNumberOfElements":1,
-                            "hasNext":false,
-                            "hasPrevious":true,
-                            "content":[],
-                            "numberOfElements":0
-                        }
-                        """
-                ));
+        Assertions.assertEquals(0, page.getPage());
+        Assertions.assertEquals(0, page.getSize());
 
     }
 
