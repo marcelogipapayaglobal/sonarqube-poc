@@ -1,4 +1,4 @@
-package v1;
+package com.papaya.cycleactivitylog.service.apis.v1;
 
 import com.papaya.cycleactivitylog.service.apis.services.PrimaryLoggedItemsApiService;
 import com.papaya.cycleactivitylog.service.apis.v1.controllers.LoggedItemsApiController;
