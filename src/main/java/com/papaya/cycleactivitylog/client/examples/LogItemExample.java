@@ -55,7 +55,7 @@ public class LogItemExample {
                     .build();
 
             client.info(loggedItem);
-            System.out.println("The client is probably still processing our request, but we are not blocked.");
+            log.info("The client is probably still processing our request, but we are not blocked.");
 
             System.out.println("The LoggItem class provides facility methods for logging,. Very helpful if you are using the default client.");
             loggedItem.logWarning();
