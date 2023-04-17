@@ -47,6 +47,7 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          SONAR_PROJECT_KEY: mg-ppglob-poc
 
       # Check the Quality Gate status.
       - name: SonarQube Quality Gate check
