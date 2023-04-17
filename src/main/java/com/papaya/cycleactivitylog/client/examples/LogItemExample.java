@@ -5,6 +5,7 @@ import com.papaya.cycleactivitylog.client.CycleActivityLogClientConfiguration;
 import com.papaya.cycleactivitylog.client.LoggedItem;
 import com.papaya.cycleactivitylog.client.LoggedItemEventType;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.URI;
 import java.time.LocalDateTime;
@@ -32,6 +33,7 @@ import java.time.ZoneOffset;
  * <p>
  * If you want to use a profile for AWS credentials, set the profile name in the AWS_PROFILE environment variable
  */
+@Slf4j
 public class LogItemExample {
 
     @SneakyThrows
@@ -40,8 +42,8 @@ public class LogItemExample {
 
             CycleActivityLogClient client = CycleActivityLogClient.defaultClient();
 
-            System.out.println("We can now log the item.");
-            System.out.println("Logging is non-blocking");
+            log.info("We can now log the item.");
+            log.info("Logging is non-blocking");
             var loggedItem = LoggedItem.builder()
                     .cycleId("2")
                     .source("AUDIT")
