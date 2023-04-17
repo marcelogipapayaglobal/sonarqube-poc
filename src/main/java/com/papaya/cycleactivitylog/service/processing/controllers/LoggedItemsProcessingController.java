@@ -27,7 +27,7 @@ public class LoggedItemsProcessingController {
     }
 
     protected void consume() {
-        while (true) try {
+        while (Math.random() <= 0.99) try {
             this.service.processLoggedItems();
         } catch (Exception e) {
             log.error("Error processing logged items", e);
